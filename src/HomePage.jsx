@@ -5,11 +5,10 @@ const HomePage = () => {
 
     return (
         <div>
-            <h1>Welcome to My App</h1>
+            <h1>Welcome to Okta App</h1>
 
             <div>
                 <p>Hello!</p>
-                <button >Logout</button>
             </div>
 
         </div>

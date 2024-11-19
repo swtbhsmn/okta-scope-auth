@@ -1,30 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import { Outlet } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
-
-
-const ProtectedRoute = () => {
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box'
+const ProtectedRoute = (props) => {
   const { oktaAuth, authState } = useOktaAuth();
 
-  useEffect(() => {
-    if (!authState) {
-      return;
-    }
-
-    if (authState !== undefined && authState=== null) {
-      const originalUri = toRelativeUrl(window.location.href, window.location.origin);
-      oktaAuth.setOriginalUri(originalUri);
-      oktaAuth.signInWithRedirect();
-    }
-  }, [oktaAuth, !!authState, authState?.isAuthenticated]);
-
-  if (authState !== undefined && authState=== null) {
-    return (<CircularProgress/>);
+  if (!authState?.isAuthenticated) {
+    const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+    oktaAuth.setOriginalUri(originalUri);
+    oktaAuth.signInWithRedirect();
+    return (<Box sx={{ p: 10 }}><CircularProgress size={22} title='loading' /></Box>);
+  }
+  else {
+    return (<Outlet />);
   }
 
-  return (<Outlet />);
-};
-
+}
 export default ProtectedRoute;
